@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>시스템 설계 발표</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap"
+      rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Noto Sans KR", sans-serif;
+        background-color: #f0f2f5;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      .tab-btn {
+        transition: all 0.3s ease;
+      }
+      .api-card {
+        transition: box-shadow 0.3s ease;
+      }
+      .api-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+      .method-post {
+        background-color: #49cc90;
+      }
+      .method-get {
+        background-color: #61affe;
+      }
+      .method-put {
+        background-color: #fca130;
+      }
+      .method-delete {
+        background-color: #f93e3e;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-100 text-gray-800">
+    <div class="container mx-auto p-4 sm:p-8">
+      <header class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-900">시스템 설계 명세서</h1>
+        <p class="text-lg text-gray-600 mt-2">여행 계획 공유 서비스</p>
+      </header>
+
+      <!-- Tab Navigation -->
+      <div
+        class="mb-8 bg-white p-2 rounded-lg shadow-md flex flex-wrap justify-center gap-2">
+        <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'api 명세서')">
+          API 명세서
+        </button>
+        <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'interface')">
+          인터페이스 설계
+        </button>
+        <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'erd')">
+          전체 ERD
+        </button>
+        <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'members')">
+          MEMBERS
+        </button>
+        <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'plans')">
+          PLANS
+        </button>
+        <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'pivot')">
+          MEMBERS_PLANS
+        </button>
+        <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'places')">
+          PLACES
+        </button>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="tab-contents">
+        <!-- Interface Design Slide -->
+        <div
+          id="interface"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-6 border-b pb-4">
+            인터페이스 설계 (UI Flow)
+          </h2>
+          <div class="text-center">
+            <p class="mb-6 text-gray-700">
+              사용자 인증부터 여행 계획 생성, 장소 추가 및 지도 확인까지의
+              핵심적인 사용자 흐름입니다.
+            </p>
+            <img
+              src="ui.png"
+              alt="Interface Flow"
+              class="w-full h-auto rounded-lg shadow-md border" />
+          </div>
+        </div>
+
+        <!-- ERD Slide -->
+        <div
+          id="erd"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-6 border-b pb-4">
+            Entity-Relationship Diagram (ERD)
+          </h2>
+          <div class="space-y-6">
+            <p class="text-gray-700">
+              - <code class="bg-gray-200 px-2 py-1 rounded">MEMBERS</code>와
+              <code class="bg-gray-200 px-2 py-1 rounded">PLANS</code>는
+              다대다(N:M) 관계이며,
+              <code class="bg-gray-200 px-2 py-1 rounded"
+                >MEMBERS_PLANS_PIVOT</code
+              >
+              테이블로 연결됩니다.<br />
+              - <code class="bg-gray-200 px-2 py-1 rounded">PLANS</code>는 여러
+              개의 <code class="bg-gray-200 px-2 py-1 rounded">PLACES</code>를
+              가질 수 있는 일대다(1:N) 관계입니다.<br />
+              - <code class="bg-gray-200 px-2 py-1 rounded">MEMBERS</code>는
+              여러 개의
+              <code class="bg-gray-200 px-2 py-1 rounded">PLACES</code>를 생성할
+              수 있는 일대다(1:N) 관계입니다.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- MEMBERS -->
+              <div class="bg-sky-50 border border-sky-200 rounded-lg p-4">
+                <h3 class="font-bold text-sky-800">MEMBERS (사용자)</h3>
+                <ul class="list-disc list-inside mt-2 text-sm text-gray-700">
+                  <li><strong>MEMBER_ID (PK)</strong></li>
+                  <li>SOCIAL_ID</li>
+                  <li>NICKNAME</li>
+                  <li>...</li>
+                </ul>
+              </div>
+              <!-- PLANS -->
+              <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                <h3 class="font-bold text-green-800">PLANS (여행 계획)</h3>
+                <ul class="list-disc list-inside mt-2 text-sm text-gray-700">
+                  <li><strong>PLAN_ID (PK)</strong></li>
+                  <li>TITLE</li>
+                  <li>HOST_ID (FK to MEMBERS)</li>
+                  <li>...</li>
+                </ul>
+              </div>
+              <!-- PIVOT -->
+              <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <h3 class="font-bold text-yellow-800">MEMBERS_PLANS_PIVOT</h3>
+                <ul class="list-disc list-inside mt-2 text-sm text-gray-700">
+                  <li><strong>MEMBER_ID (PK, FK)</strong></li>
+                  <li><strong>PLAN_ID (PK, FK)</strong></li>
+                  <li>COLOR</li>
+                  <li>...</li>
+                </ul>
+              </div>
+              <!-- PLACES -->
+              <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <h3 class="font-bold text-purple-800">PLACES (장소)</h3>
+                <ul class="list-disc list-inside mt-2 text-sm text-gray-700">
+                  <li><strong>PLACE_ID (PK)</strong></li>
+                  <li>PLAN_ID (FK to PLANS)</li>
+                  <li>MEMBER_ID (FK to MEMBERS)</li>
+                  <li>NAME</li>
+                  <li>...</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Members Slide -->
+        <div
+          id="members"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-2">Table: MEMBERS</h2>
+          <p class="text-gray-600 mb-6">사용자 정보를 관리하는 테이블</p>
+
+          <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">ERD</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3">Column</th>
+                    <th class="px-6 py-3">Data Type</th>
+                    <th class="px-6 py-3">Constraints</th>
+                    <th class="px-6 py-3">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">MEMBER_ID</td>
+                    <td class="px-6 py-4">NUMBER(19)</td>
+                    <td class="px-6 py-4">PK, NOT NULL</td>
+                    <td>사용자 고유 ID</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">SOCIAL_ID</td>
+                    <td class="px-6 py-4">VARCHAR2(255)</td>
+                    <td class="px-6 py-4">NOT NULL, UQ</td>
+                    <td>소셜 로그인 ID</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">SOCIAL_TYPE</td>
+                    <td class="px-6 py-4">VARCHAR2(20)</td>
+                    <td class="px-6 py-4">NOT NULL, CHECK</td>
+                    <td>소셜 로그인 타입 (GOOGLE, KAKAO...)</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">NICKNAME</td>
+                    <td class="px-6 py-4">VARCHAR2(64)</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>닉네임</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">EMAIL</td>
+                    <td class="px-6 py-4">VARCHAR2(255)</td>
+                    <td class="px-6 py-4">NOT NULL, UQ</td>
+                    <td>이메일</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">PROFILE_IMAGE</td>
+                    <td class="px-6 py-4">VARCHAR2(255)</td>
+                    <td class="px-6 py-4"></td>
+                    <td>프로필 이미지 URL</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">CREATED_AT</td>
+                    <td class="px-6 py-4">TIMESTAMP</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>생성일</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plans Slide -->
+        <div
+          id="plans"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-2">Table: PLANS</h2>
+          <p class="text-gray-600 mb-6">
+            여행 계획의 기본 정보를 관리하는 테이블
+          </p>
+
+          <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">ERD</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3">Column</th>
+                    <th class="px-6 py-3">Data Type</th>
+                    <th class="px-6 py-3">Constraints</th>
+                    <th class="px-6 py-3">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">PLAN_ID</td>
+                    <td class="px-6 py-4">NUMBER(19)</td>
+                    <td class="px-6 py-4">PK, NOT NULL</td>
+                    <td>계획 고유 ID</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">TITLE</td>
+                    <td class="px-6 py-4">VARCHAR2(255)</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>계획 제목</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">START_DATE</td>
+                    <td class="px-6 py-4">DATE</td>
+                    <td class="px-6 py-4"></td>
+                    <td>여행 시작일</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">END_DATE</td>
+                    <td class="px-6 py-4">DATE</td>
+                    <td class="px-6 py-4"></td>
+                    <td>여행 종료일</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">HOST_ID</td>
+                    <td class="px-6 py-4">NUMBER(19)</td>
+                    <td class="px-6 py-4">FK, NOT NULL</td>
+                    <td>계획 생성자(Host) ID</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">SHARE_URI</td>
+                    <td class="px-6 py-4">VARCHAR2(255)</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>공유용 고유 URI</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pivot Table Slide -->
+        <div
+          id="pivot"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-2">Table: MEMBERS_PLANS_PIVOT</h2>
+          <p class="text-gray-600 mb-6">
+            사용자와 계획의 N:M 관계를 정의하는 테이블
+          </p>
+
+          <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">ERD</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3">Column</th>
+                    <th class="px-6 py-3">Data Type</th>
+                    <th class="px-6 py-3">Constraints</th>
+                    <th class="px-6 py-3">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">MEMBER_ID</td>
+                    <td class="px-6 py-4">NUMBER(19)</td>
+                    <td class="px-6 py-4">PK, FK, NOT NULL</td>
+                    <td>사용자 ID</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">PLAN_ID</td>
+                    <td class="px-6 py-4">NUMBER(19)</td>
+                    <td class="px-6 py-4">PK, FK, NOT NULL</td>
+                    <td>계획 ID</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">COLOR</td>
+                    <td class="px-6 py-4">VARCHAR2(16)</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>지도에 표시될 사용자별 색상</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">JOINED_AT</td>
+                    <td class="px-6 py-4">TIMESTAMP</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>참여일</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Places Slide -->
+        <div
+          id="places"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-3xl font-bold mb-2">Table: PLACES</h2>
+          <p class="text-gray-600 mb-6">
+            계획에 포함된 개별 장소를 관리하는 테이블
+          </p>
+
+          <div class="mb-8">
+            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">ERD</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3">Column</th>
+                    <th class="px-6 py-3">Data Type</th>
+                    <th class="px-6 py-3">Constraints</th>
+                    <th class="px-6 py-3">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">PLACE_ID</td>
+                    <td class="px-6 py-4">NUMBER(19)</td>
+                    <td class="px-6 py-4">PK, NOT NULL</td>
+                    <td>장소 고유 ID</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">MEMBER_ID</td>
+                    <td class="px-6 py-4">NUMBER(19)</td>
+                    <td class="px-6 py-4">FK, NOT NULL</td>
+                    <td>장소 추가자 ID</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">PLAN_ID</td>
+                    <td class="px-6 py-4">NUMBER(19)</td>
+                    <td class="px-6 py-4">FK, NOT NULL</td>
+                    <td>소속된 계획 ID</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">NAME</td>
+                    <td class="px-6 py-4">VARCHAR2(255)</td>
+                    <td class="px-6 py-4"></td>
+                    <td>장소 이름</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">LATITUDE</td>
+                    <td class="px-6 py-4">DECIMAL(9,6)</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>위도</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">LONGITUDE</td>
+                    <td class="px-6 py-4">DECIMAL(9,6)</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>경도</td>
+                  </tr>
+                  <tr class="bg-white border-b">
+                    <td class="px-6 py-4 font-medium">TRAVEL_DATE</td>
+                    <td class="px-6 py-4">DATE</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>방문 예정일</td>
+                  </tr>
+                  <tr class="bg-gray-50 border-b">
+                    <td class="px-6 py-4 font-medium">ORDER_IN_DAY</td>
+                    <td class="px-6 py-4">NUMBER(10)</td>
+                    <td class="px-6 py-4">NOT NULL</td>
+                    <td>일자 내 방문 순서</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Api Slide -->
+        <div
+          id="api 명세서"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <div>
+            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">
+              API 명세서
+            </h3>
+            <div>
+              <div class="space-y-4">
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-get text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >GET</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/member/google/login</code
+                    >
+                    <p class="text-gray-600 mt-1">
+                      구글 OAuth 인증코드를 사용하여 로그인 처리 및 JWT
+                      액세스/리프레시 토큰 발급
+                    </p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Request Body</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"code": "AUTHORIZATION_CODE"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "id": 123,
+  "accessToken": "ACCESS_TOKEN",
+  "refreshToken" : "REFRESH_TOKEN"
+}</code>
+                        </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >POST</span
+                    ><code class="ml-2 font-mono text-lg">/member/logout</code>
+                    <p class="text-gray-600 mt-1">로그아웃 합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "message": "로그아웃 성공"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >POST</span
+                    >
+                    <code class="ml-2 font-mono text-lg">/member/withdraw</code>
+                    <p class="text-gray-600 mt-1">회원탈퇴 합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "message" : "회원탈퇴 성공"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >POST</span
+                    >
+                    <code class="ml-2 font-mono text-lg"
+                      >/auth/refresh-token</code
+                    >
+                    <p class="text-gray-600 mt-1">
+                      리프레시 토큰을 이용한 엑세스 토큰 재발급.
+                    </p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Request Body</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"refreshToken": "REFRESH_TOKEN"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "accessToken": "ACCESS_TOKEN"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-get text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >GET</span
+                    ><code class="ml-2 font-mono text-lg">/plans</code>
+                    <p class="text-gray-600 mt-1">여행 계획을 조회합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Request Body</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"year": 2025}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "plans" : ["planId" : 1234,
+  "title" : "TITLE",
+  "startDate" : "2025-07-26",
+  "endDate" : "2025-08-17", ...]
+}</code>
+                      </pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">
+                        Response Body (204 No Content)
+                      </h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "message" : "반환 데이터 없음"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >POST</span
+                    ><code class="ml-2 font-mono text-lg">/plans/{planId}</code>
+                    <p class="text-gray-600 mt-1">해당 계획을 삭제합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "message" : "계획 삭제 성공"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+                <!--  to do -->
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-get text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >GET</span
+                    ><code class="ml-2 font-mono text-lg">/plans/{planId}</code>
+                    <p class="text-gray-600 mt-1">계획 정보를 보여줍니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+                        <code>
+{
+  "title" : "TITLE",
+  "startDate" : "2025-07-26", 
+  "endDate" : "2025-08-17",
+  "places": 
+  [
+    "mebmerId", : "MEMBER_ID",
+    "name": "NAME",
+    "description" : "DESCRIPTION",
+    "latitude" : 37.5210856,
+    "longitude" : 126.9051926,
+    "googlePlaceId" : "GOOGLE_PLACE_ID",
+    "travelDate" : "TRAVEL_DATE",
+    "orderInDay" : 123,
+    ...
+  ]
+}</code></pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >POST</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/plans/{planId}/share</code
+                    >
+                    <p class="text-gray-600 mt-1">계획 정보를 공유합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "uri" : "URI"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-get text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >GET</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/plans/{planId}/recommendations</code
+                    >
+                    <p class="text-gray-600 mt-1">
+                      장소 추천여행지 목록 보여줍니다.
+                    </p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Request Body</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "centerLatitude" : 37.5210856,
+  "cneterLongitude" : 126.9051926,
+  "zoomLevel" : ZOOM_LEVEL,
+  "planId" : PLAN_ID
+}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "places": 
+  [
+    "placeId" : PLACE_ID
+    "mebmerId", : MEMBER_ID,
+    "name": "NAME",
+    "description" : "DESCRIPTION",
+    "latitude" : 37.5210856,
+    "longitude" : 126.9051926,
+    "googlePlaceId" : "GOOGLE_PLACE_ID",
+    "travelDate" : "TRAVEL_DATE",
+    "orderInDay" : 123,
+    ...
+  ]
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >POST</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/plans/{planId}/places</code
+                    >
+                    <p class="text-gray-600 mt-1">장소를 생성합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Request Body</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "name": "NAME",
+  "description" : "DESCRIPTION",
+  "latitude" : 37.5210856,
+  "longitude" : 126.9051926,
+  "googlePlaceId" : "GOOGLE_PLACE_ID",
+  "travelDate" : "TRAVEL_DATE",
+  "orderInDay" : 123
+}</code>
+                      </pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "message" : "장소 등록 성공"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-put text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >PUT</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/plans/{planId}/places</code
+                    >
+                    <p class="text-gray-600 mt-1">장소를 수정합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Request Body</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "placeId" : 123,
+  "description" : "DESCRIPTION"
+}</code>
+                      </pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">
+                        Response Body (204 No Content)
+                      </h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "message" : "수정 성공"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-delete text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >DELETE</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/plans/{planId}/places</code
+                    >
+                    <p class="text-gray-600 mt-1">장소를 삭제합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+
+                    <div>
+                      <h4 class="font-semibold mb-2">
+                        Response Body (204 No Content)
+                      </h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "message" : "장소 삭제 완료"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-put text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >PUT</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/plans/{planId}/places/reorder</code
+                    >
+                    <p class="text-gray-600 mt-1">장소 순서 변경합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Request Body</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+ "travelDate": "2025-08-01",
+  "places": [
+    { "placeId": 305, "orderInDay": 1 },
+    { "placeId": 311, "orderInDay": 2 },
+    { "placeId": 299, "orderInDay": 3 },
+    { "placeId": 302, "orderInDay": 4 }
+  ]
+}</code>
+                      </pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "data": [
+    {
+      "placeId": 305,
+      "memberId": 42,
+      "planId": 15,
+      "name": "도쿄타워",
+      "latitude": 35.658581,
+      "longitude": 139.745433,
+      "travelDate": "2025-08-01",
+      "orderInDay": 1
+    },
+    {
+      "placeId": 311,
+      "memberId": 42,
+      "planId": 15,
+      "name": "아사쿠사",
+      "latitude": 35.714765,
+      "longitude": 139.796655,
+      "travelDate": "2025-08-01",
+      "orderInDay": 2
+    },
+    {
+      "placeId": 299,
+      "memberId": 42,
+      "planId": 15,
+      "name": "우에노 공원",
+      "latitude": 35.715298,
+      "longitude": 139.773037,
+      "travelDate": "2025-08-01",
+      "orderInDay": 3
+    },
+    {
+      "placeId": 302,
+      "memberId": 42,
+      "planId": 15,
+      "name": "긴자",
+      "latitude": 35.671691,
+      "longitude": 139.764389,
+      "travelDate": "2025-08-01",
+      "orderInDay": 4
+    }
+  ]
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-get text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >GET</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/plans/{planId}/endpoint</code
+                    >
+                    <p class="text-gray-600 mt-1">
+                      웹소켓 서버 주소(마우스 위치/채팅 실시간 공유용).
+                    </p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "webSocketURI" : "WEB_SOCKECT_URI"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="api-card border rounded-lg overflow-hidden">
+                  <div class="p-4">
+                    <span
+                      class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
+                      >POST</span
+                    ><code class="ml-2 font-mono text-lg"
+                      >/plans/{planId}/newColor</code
+                    >
+                    <p class="text-gray-600 mt-1">계획 내 색깔 갱신합니다.</p>
+                  </div>
+                  <div class="bg-gray-50 p-4 border-t space-y-4">
+                    <div>
+                      <h4 class="font-semibold mb-2">Headers</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm"><code>{"Authorization": "Bearer {JWT_TOKEN}"}</code></pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Request Body</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "color" : "COLOR"
+}</code>
+                      </pre>
+                    </div>
+                    <div>
+                      <h4 class="font-semibold mb-2">Response Body (200 OK)</h4>
+                      <pre
+                        class="bg-gray-900 text-white p-3 rounded-md text-sm">
+<code>{
+  "message": "변경 성공"
+}</code>
+                      </pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 첫 번째 버튼(API 명세서 탭) 스타일 활성화
+        const defaultBtn = document.querySelector(".tab-btn");
+        defaultBtn.classList.add("bg-blue-500", "text-white");
+        defaultBtn.classList.remove("text-gray-600");
+        // API 명세서 콘텐츠를 기본 표시
+        document.getElementById("api 명세서").classList.add("active");
+      });
+
+      function changeTab(event, tabId) {
+        const tabContents = document.querySelectorAll(".tab-content");
+        tabContents.forEach(content => content.classList.remove("active"));
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        tabButtons.forEach(button => {
+          button.classList.remove("bg-blue-500", "text-white");
+          button.classList.add("text-gray-600");
+        });
+        document.getElementById(tabId).classList.add("active");
+        event.currentTarget.classList.add("bg-blue-500", "text-white");
+        event.currentTarget.classList.remove("text-gray-600");
+      }
+    </script>
+  </body>
+</html>
