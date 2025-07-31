@@ -41,28 +41,82 @@
       .method-delete {
         background-color: #f93e3e;
       }
+       body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .card {
+            background-color: #fdfaf6;
+            border: 1px solid #e7d8c9;
+        }
+        .card-header {
+            background-color: #d2b48c;
+            color: #5d4037;
+        }
+        .arrow {
+            font-size: 2.5rem;
+            color: #8d6e63;
+            line-height: 1;
+        }
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        @media (min-width: 1024px) {
+            .flow-diagram {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+            }
+        }
+        .sub-list {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            list-style-type: '→ ';
+            padding-left: 0.5rem;
+        }
+        .code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #f0ebe5;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
     </style>
+    
   </head>
   <body class="bg-slate-100 text-gray-800">
     <div class="container mx-auto p-4 sm:p-8">
       <header class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-900">시스템 설계 명세서</h1>
-        <p class="text-lg text-gray-600 mt-2">여행 계획 공유 서비스</p>
+        <h1 class="text-5xl font-bold text-gray-900">시스템 설계 명세서</h1><br>
+        <p class="text-2xl text-gray-600 mt-2">여행 계획 공유 서비스</p>
       </header>
 
       <!-- Tab Navigation -->
       <div
         class="mb-8 bg-white p-2 rounded-lg shadow-md flex flex-wrap justify-center gap-2">
+          <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'interface')">
+          인터페이스 설계
+        </button>
+
+           <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'frontend')">
+          프론트엔드 아키텍처 설계
+        </button>
+        <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'backend')">
+          백엔드 아키텍처 설계
+        </button>
         <button
           class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
           onclick="changeTab(event, 'api 명세서')">
           API 명세서
         </button>
-        <button
-          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
-          onclick="changeTab(event, 'interface')">
-          인터페이스 설계
-        </button>
+      
         <button
           class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
           onclick="changeTab(event, 'erd')">
@@ -88,26 +142,292 @@
           onclick="changeTab(event, 'places')">
           PLACES
         </button>
+     
       </div>
 
       <!-- Tab Content -->
       <div id="tab-contents">
+
+              <!-- frontend Slide -->
+               <div
+          id="frontend"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-4xl font-bold mb-6 border-b pb-4">
+            프론트엔드 아키텍처 설계
+          </h2>
+          <div class="text-center">
+           <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-[#5d4037] mb-2">프론트엔드 아키텍처 설계</h1>
+            <p class="text-lg text-[#795548]">여행 일정 공유 서비스 'Michiki'</p>
+        </header>
+
+        <div class="flow-diagram space-y-8 lg:space-y-0 lg:space-x-8">
+
+            <!-- 1. View (화면) -->
+            <div class="w-full lg:w-1/3">
+                <div class="card rounded-xl shadow-lg h-full">
+                    <div class="card-header p-4 rounded-t-xl">
+                        <h2 class="text-2xl font-bold text-center">① View (화면)</h2>
+                        <p class="text-sm text-center font-medium">UI & 컴포넌트</p>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium">사용자 인터페이스를 구성하는 재사용 가능한 컴포넌트 집합입니다.</p>
+                        <ul class="space-y-4 list-disc list-inside text-left">
+                            <li><strong>주요 페이지 UI:</strong>
+                                <ul class="sub-list">
+                                    <li>메인, 대쉬보드, 스크랩 페이지</li>
+                                </ul>
+                            </li>
+                            <li><strong>여행 일정 상세 페이지 컴포넌트:</strong>
+                                <ul class="sub-list">
+                                    <li><code class="code">GoogleMap</code>: 지도 표시 영역</li>
+                                    <li><code class="code">Autocomplete</code>: 장소 검색 자동완성</li>
+                                    <li><code class="code">DatePicker</code>: 날짜 선택 달력</li>
+                                    <li><code class="code">DraggablePin</code>: 좌측 사이드바의 드래그 가능한 핀</li>
+                                    <li><code class="code">PinModal</code>: 핀 상세정보/메모용 모달</li>
+                                    <li><code class="code">CustomInfoWindow</code>: 지도 위 장소 정보창</li>
+                                    <li><code class="code">CategoryButtons</code>: 주변 장소 탐색 버튼</li>
+                                </ul>
+                            </li>
+                             <li><strong>UI 라이브러리/훅:</strong>
+                                <ul class="sub-list">
+                                     <li><code class="code">DndContext</code>: 드래그앤드롭 환경 제공</li>
+                                </ul>
+                             </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow hidden lg:flex items-center">→</div>
+            <div class="arrow lg:hidden">↓</div>
+
+            <!-- 2. Controller (로직/상호작용) -->
+            <div class="w-full lg:w-1/3">
+                <div class="card rounded-xl shadow-lg h-full">
+                    <div class="card-header p-4 rounded-t-xl">
+                        <h2 class="text-2xl font-bold text-center">② Controller (로직)</h2>
+                        <p class="text-sm text-center font-medium">이벤트 처리 & 함수</p>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium">사용자 이벤트에 반응하여 상태 변경을 요청하거나 API를 호출하는 함수들의 집합입니다.</p>
+                        <ul class="space-y-3 list-disc list-inside text-left">
+                            <li><strong>이벤트 핸들러 함수:</strong>
+                                <ul class="sub-list">
+                                    <li><code class="code">onLoadMap(map)</code>: 지도 초기화</li>
+                                    <li><code class="code">handleAddPin()</code>: 핀 추가</li>
+                                    <li><code class="code">handleDeletePin(id)</code>: 핀 삭제</li>
+                                    <li><code class="code">handlePinClick(pin)</code>: 핀 클릭 (모달 열기)</li>
+                                    <li><code class="code">handleDragEnd(event)</code>: 핀 순서 변경</li>
+                                    <li><code class="code">handleNearbySearch(type)</code>: 주변 장소 검색</li>
+                                </ul>
+                            </li>
+                            <li><strong>API 요청 및 라우팅:</strong>
+                                 <ul class="sub-list">
+                                    <li>Google Auth, Places, Geocoding API</li>
+                                    <li>백엔드 API (일정/핀/메모 CRUD)</li>
+                                    <li><code class="code">useNavigate</code>, <code class="code">useLocation</code> (페이지 이동)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow hidden lg:flex items-center">→</div>
+            <div class="arrow lg:hidden">↓</div>
+
+            <!-- 3. Model (데이터) -->
+            <div class="w-full lg:w-1/3">
+                <div class="card rounded-xl shadow-lg h-full">
+                    <div class="card-header p-4 rounded-t-xl">
+                        <h2 class="text-2xl font-bold text-center">③ Model (데이터)</h2>
+                        <p class="text-sm text-center font-medium">전역 상태 관리</p>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium">애플리케이션의 모든 데이터를 저장하고 상태 변화를 관리합니다.</p>
+                        <ul class="space-y-3 list-disc list-inside text-left">
+                            <li><strong>핵심 데이터 구조:</strong>
+                                <ul class="sub-list">
+                                    <li><code class="code">pinsByDay</code>: 날짜별 핀(장소) 2차원 배열</li>
+                                    <li><code class="code">User</code>: 사용자 정보 객체</li>
+                                </ul>
+                            </li>
+                            <li><strong>UI 상태 (State):</strong>
+                                <ul class="sub-list">
+                                    <li><code class="code">dateRange</code>: 선택된 여행 날짜 범위</li>
+                                    <li><code class="code">selectedDayIdx</code>: 현재 보고 있는 날짜 인덱스</li>
+                                    <li><code class="code">infoWindow</code>: 지도 정보창 데이터</li>
+                                    <li><code class="code">searchResult</code>: 검색 결과 (핀 후보)</li>
+                                    <li><code class="code">selectedPin</code>: 상세 보기 중인 핀 데이터</li>
+                                    <li><code class="code">modalOpen</code>: 핀 상세 모달 열림 여부</li>
+                                    <li><code class="code">activeCategory</code>: 선택된 주변탐색 카테고리</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 데이터 흐름도 -->
+        <div class="mt-12 text-center">
+            <h3 class="text-2xl font-bold text-[#5d4037] mb-6">🔄 데이터 흐름 요약 🔄</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-6 card rounded-xl shadow-md text-left">
+                    <h4 class="font-bold text-lg mb-2">[시나리오 1: 지도에 핀 추가하기]</h4>
+                    <p class="text-md leading-relaxed">
+                        <strong>1. View:</strong> 사용자가 지도 위에서 우클릭합니다.<br>
+                        <strong>2. Controller:</strong> <code class="code">onLoadMap</code>에서 등록한 리스너가 좌표를 감지하고, <code class="code">handleAddPin</code> 함수를 호출합니다.<br>
+                        <strong>3. Model:</strong> Controller는 Model의 <code class="code">pinsByDay[selectedDayIdx]</code> 배열에 새로운 핀 객체를 추가하도록 요청합니다.<br>
+                        <strong>4. View:</strong> <code class="code">pinsByDay</code> 배열의 변경을 감지하고, 지도와 사이드바에 새로운 핀을 렌더링합니다.
+                    </p>
+                </div>
+                <div class="p-6 card rounded-xl shadow-md text-left">
+                    <h4 class="font-bold text-lg mb-2">[시나리오 2: 핀 순서 바꾸기]</h4>
+                    <p class="text-md leading-relaxed">
+                        <strong>1. View:</strong> 사용자가 사이드바에서 <code class="code">DraggablePin</code>을 드래그합니다.<br>
+                        <strong>2. Controller:</strong> <code class="code">DndContext</code>가 드래그 종료를 감지하고 <code class="code">handleDragEnd</code> 함수를 호출합니다.<br>
+                        <strong>3. Model:</strong> Controller는 이벤트 정보를 바탕으로 <code class="code">pinsByDay</code> 배열의 요소 순서를 변경하도록 요청합니다.<br>
+                        <strong>4. View:</strong> 변경된 <code class="code">pinsByDay</code> 배열 순서에 맞춰 사이드바의 핀 목록이 다시 렌더링됩니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+          </div>
+        </div>
+               <!-- backtend Slide -->
+                <div
+          id="backend"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-4xl font-bold mb-6 border-b pb-4">
+            백엔드 아키텍처 설계
+          </h2>
+          <div class="text-center">
+           <div class="flow-diagram space-y-8 lg:space-y-0 lg:space-x-8">
+<!-- 1. View (화면) -->
+<div class="w-full lg:w-1/3">
+<div class="card rounded-xl shadow-lg h-full">
+<div class="card-header p-4 rounded-t-xl">
+<h2 class="text-2xl font-bold text-center">① API Layer (엔드포인트)</h2>
+<p class="text-sm text-center font-medium">요청 처리 / 라우팅</p>
+</div>
+<div class="p-6">
+<p class="mb-4 font-medium">클라이언트의 요청을 받고 적절한 서비스 계층으로 전달하는 역할을 합니다.</p>
+<ul class="space-y-4 list-disc list-inside text-left"><li><strong>주요 API 엔드포인트:</strong><ul class="sub-list"><li><code class="code">GET /plans/{id}: 여행 일정 상세 조회</code></li><li><code class="code">POST /plans: 여행 일정 생성</code></li><li><code class="code">PUT /plans/{id}: 일정 수정</code></li><li><code class="code">DELETE /plans/{id}: 일정 삭제</code></li></ul></li><li><strong>요청 인증 및 라우팅:</strong><ul class="sub-list"><li><code class="code">Spring Security를 통한 인증 처리</code></li><li><code class="code">@RestController, @RequestMapping</code></li></ul></li></ul>
+</div>
+</div>
+</div>
+<div class="arrow hidden lg:flex items-center">→</div>
+<div class="arrow lg:hidden">↓</div>
+<!-- 2. Controller (로직/상호작용) -->
+<div class="w-full lg:w-1/3">
+<div class="card rounded-xl shadow-lg h-full">
+<div class="card-header p-4 rounded-t-xl">
+<h2 class="text-2xl font-bold text-center">② Service Layer (비즈니스 로직)</h2>
+<p class="text-sm text-center font-medium">비즈니스 로직 처리</p>
+</div>
+<div class="p-6">
+<p class="mb-4 font-medium">실제 기능 구현과 로직 처리, 트랜잭션 관리 등을 수행합니다.</p>
+<ul class="space-y-3 list-disc list-inside text-left"><li><strong>핵심 서비스 로직:</strong><ul class="sub-list"><li><code class="code">PlanService: 일정 관련 로직 처리</code></li><li><code class="code">PinService: 핀 관련 CRUD 로직</code></li><li><code class="code">MemoService: 메모 저장/삭제/조회</code></li></ul></li><li><strong>트랜잭션 및 유효성:</strong><ul class="sub-list"><li><code class="code">@Transactional: 트랜잭션 처리</code></li><li><code class="code">DTO → Entity 변환 및 유효성 검사</code></li></ul></li></ul>
+</div>
+</div>
+</div>
+<div class="arrow hidden lg:flex items-center">→</div>
+<div class="arrow lg:hidden">↓</div>
+<!-- 3. Model (데이터) -->
+<div class="w-full lg:w-1/3">
+<div class="card rounded-xl shadow-lg h-full">
+<div class="card-header p-4 rounded-t-xl">
+<h2 class="text-2xl font-bold text-center">③ Repository Layer (데이터 접근)</h2>
+<p class="text-sm text-center font-medium">DB 통신 / CRUD</p>
+</div>
+<div class="p-6">
+<p class="mb-4 font-medium">데이터베이스와 직접 통신하여 데이터를 저장하고 불러옵니다.</p>
+<ul class="space-y-3 list-disc list-inside text-left"><li><strong>데이터베이스 엔티티:</strong><ul class="sub-list"><li><code class="code">PlanEntity, PinEntity, MemoEntity</code></li></ul></li><li><strong>JPA Repository:</strong><ul class="sub-list"><li><code class="code">PlanRepository, PinRepository, MemoRepository</code></li><li><code class="code">JPQL / Query Method 활용</code></li></ul></li></ul>
+</div>
+</div>
+</div>
+</div>
+<!-- 데이터 흐름도 -->
+
+</div>
+          </div>
+        </div>
+
         <!-- Interface Design Slide -->
         <div
           id="interface"
           class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-6 border-b pb-4">
+          <h2 class="text-4xl font-bold mb-6 border-b pb-4">
             인터페이스 설계 (UI Flow)
           </h2>
-          <div class="text-center">
-            <p class="mb-6 text-gray-700">
-              사용자 인증부터 여행 계획 생성, 장소 추가 및 지도 확인까지의
-              핵심적인 사용자 흐름입니다.
-            </p>
+          <div class="text-center text-2xl">
+    
+             <strong class="text-3xl font-bold mb-6  pb-4">단계별 사용자 흐름 제공<br></strong>
+             시작 페이지 → 대시보드 → 상세 계획 페이지로 이어지는 3단계 UI 흐름<br>
+             사용자가 자연스럽게 기능을 탐색하고 이용할 수 있도록 설계<br><br>
+            </li>
+            <ul class="list-disc list-inside text-left space-y-2 text-gray-800"></ul>
             <img
-              src="ui.png"
+              src="0_landing_page.png"
+              alt="Interface Flow"
+              class="w-full h-auto rounded-lg shadow-md border" /><br>
+               <li>
+            <strong class="text-3xl font-bold mb-6 pb-4"> 소셜 로그인<br></strong>
+            프론트엔드에서 구글의 OAuth를 통해 인증 진행 → 인증 성공시 인증 코드 전달 → JWT(JSON Web Token) 발급<br><br>
+              </li>
+              <li>
+            <strong class="text-3xl font-bold mb-6 pb-4">다국어 지원<br></strong>
+              유저가 어플리케이션의 언어를 선택할 수 있도록 하여 선호하는 언어로 서비스 컨텐츠 제공<br><br>
+                <img
+              src="3_main_page.png"
               alt="Interface Flow"
               class="w-full h-auto rounded-lg shadow-md border" />
+                <img
+              src="7_main_page.png"
+              alt="Interface Flow"
+              class="w-full h-auto rounded-lg shadow-md border" /><br>
+               <li>
+               <strong class="text-3xl font-bold mb-6 pb-4">여행 계획 CRUD 연동<br></strong>
+              대시보드에서 보여지는 여행 계획 목록, 계획 생성 및 삭제는 <br>
+              각각 <code class="code">GET /plans</code>, <code class="code">POST /plans</code>, <code class="code">DELETE /plans/{id}</code> API와 연결
+               </li><br>
+               <img
+              src="8_travel_plan_detail_page.png"
+              alt="Interface Flow"
+              class="w-full h-auto rounded-lg shadow-md border" /><br>
+             <li>
+             <strong class="text-3xl font-bold mb-6 pb-4">로그인 여부에 따른 기능 제한<br></strong>
+              공유 링크를 통해 접속한 로그인하지 않은 유저는 작업 참여 제한<br><br>
+               <li>
+               <strong class="text-3xl font-bold mb-6 pb-4">실시간 상태 동기화<br></strong>
+              드래그 앤 드롭 후 순서 변경, 핀 추가/삭제, 색상 변경 등은 프론트에서 상태가 즉시 반영<br>
+              동시에 백엔드 API를 통해 DB에 반영되어 다른 유저와 동기화<br>
+              만약 api 요청에 실패하게 된다면, rollback<br><br>
+             <li>
+             <strong class="text-3xl font-bold mb-6 pb-4">실시간 협업 지원<br></strong>
+             웹소켓 기술을 활용하여 현재 접속 중인 사용자들의 목록과 각 사용자의 마우스 커서 위치를 실시간으로 공유<br><br>
+              <li>
+              <strong class="text-3xl font-bold mb-6 pb-4">여행지 추천 연동<br></strong>
+              추천 여행지 목록은 유저 기반 데이터를 활용하여 JSON 형태로 프론트에 전달되어 활용<br><br>
+               <li>
+             <strong class="text-3xl font-bold mb-6 pb-4">여행지 추천 → 일정 생성으로 연결<br></strong>
+             추천 여행지를 클릭하면 지역 정보와 함께 일정 생성이 가능<br><br>
+              </li>
+                  </li>
+              </li>
+               <img
+              src="9_travel_plan_detail_page.png"
+              alt="Interface Flow"
+              class="w-full h-auto rounded-lg shadow-md border"/><br>
+            <li>
+               <strong class="text-3xl font-bold mb-6 pb-4">핀(장소) 데이터 처리<br></strong>
+            계획 상세 페이지에서 장소에 대한 메모의 변경 사항은 백엔드로 전송되어 장소 수정 API를 통해 갱신
+            </li>
           </div>
         </div>
 
@@ -115,7 +435,7 @@
         <div
           id="erd"
           class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-6 border-b pb-4">
+          <h2 class="text-4xl font-bold mb-6 border-b pb-4">
             Entity-Relationship Diagram (ERD)
           </h2>
           <div class="space-y-6">
@@ -185,11 +505,10 @@
         <div
           id="members"
           class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-2">Table: MEMBERS</h2>
+          <h2 class="text-4xl font-bold mb-2">Table: MEMBERS</h2>
           <p class="text-gray-600 mb-6">사용자 정보를 관리하는 테이블</p>
 
           <div class="mb-8">
-            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">ERD</h3>
             <div class="overflow-x-auto">
               <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -253,13 +572,12 @@
         <div
           id="plans"
           class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-2">Table: PLANS</h2>
+          <h2 class="text-4xl font-bold mb-2">Table: PLANS</h2>
           <p class="text-gray-600 mb-6">
             여행 계획의 기본 정보를 관리하는 테이블
           </p>
 
           <div class="mb-8">
-            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">ERD</h3>
             <div class="overflow-x-auto">
               <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -317,13 +635,12 @@
         <div
           id="pivot"
           class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-2">Table: MEMBERS_PLANS_PIVOT</h2>
+          <h2 class="text-4xl font-bold mb-2">Table: MEMBERS_PLANS_PIVOT</h2>
           <p class="text-gray-600 mb-6">
             사용자와 계획의 N:M 관계를 정의하는 테이블
           </p>
 
           <div class="mb-8">
-            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">ERD</h3>
             <div class="overflow-x-auto">
               <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -369,13 +686,12 @@
         <div
           id="places"
           class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
-          <h2 class="text-3xl font-bold mb-2">Table: PLACES</h2>
+          <h2 class="text-4xl font-bold mb-2">Table: PLACES</h2>
           <p class="text-gray-600 mb-6">
             계획에 포함된 개별 장소를 관리하는 테이블
           </p>
 
           <div class="mb-8">
-            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">ERD</h3>
             <div class="overflow-x-auto">
               <table class="w-full text-sm text-left text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -446,7 +762,7 @@
           id="api 명세서"
           class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
           <div>
-            <h3 class="text-2xl font-semibold mb-4 border-b pb-2">
+            <h3 class="text-4xl font-semibold mb-4 border-b pb-2">
               API 명세서
             </h3>
             <div>
@@ -457,7 +773,7 @@
                       class="method-get text-white font-bold text-xs px-2 py-1 rounded-full"
                       >GET</span
                     ><code class="ml-2 font-mono text-lg"
-                      >/member/google/login</code
+                      >/members/google/login</code
                     >
                     <p class="text-gray-600 mt-1">
                       구글 OAuth 인증코드를 사용하여 로그인 처리 및 JWT
@@ -489,7 +805,7 @@
                     <span
                       class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
                       >POST</span
-                    ><code class="ml-2 font-mono text-lg">/member/logout</code>
+                    ><code class="ml-2 font-mono text-lg">/members/logout</code>
                     <p class="text-gray-600 mt-1">로그아웃 합니다.</p>
                   </div>
                   <div class="bg-gray-50 p-4 border-t space-y-4">
@@ -516,7 +832,7 @@
                       class="method-post text-white font-bold text-xs px-2 py-1 rounded-full"
                       >POST</span
                     >
-                    <code class="ml-2 font-mono text-lg">/member/withdraw</code>
+                    <code class="ml-2 font-mono text-lg">/Members/withdraw</code>
                     <p class="text-gray-600 mt-1">회원탈퇴 합니다.</p>
                   </div>
                   <div class="bg-gray-50 p-4 border-t space-y-4">
@@ -1029,8 +1345,16 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+
+    <style>
+  .tab-content {
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+</style>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -1039,7 +1363,7 @@
         defaultBtn.classList.add("bg-blue-500", "text-white");
         defaultBtn.classList.remove("text-gray-600");
         // API 명세서 콘텐츠를 기본 표시
-        document.getElementById("api 명세서").classList.add("active");
+        document.getElementById("interface").classList.add("active");
       });
 
       function changeTab(event, tabId) {
