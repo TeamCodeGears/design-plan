@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프론트엔드 아키텍처 설계</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .card {
+            background-color: #fdfaf6;
+            border: 1px solid #e7d8c9;
+        }
+        .card-header {
+            background-color: #d2b48c;
+            color: #5d4037;
+        }
+        .arrow {
+            font-size: 2.5rem;
+            color: #8d6e63;
+            line-height: 1;
+        }
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        @media (min-width: 1024px) {
+            .flow-diagram {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+            }
+        }
+        .sub-list {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            list-style-type: '→ ';
+            padding-left: 0.5rem;
+        }
+        .code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #f0ebe5;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="bg-[#f5f2ef] text-[#3e2723] p-4 sm:p-6 md:p-8">
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-[#5d4037] mb-2">프론트엔드 아키텍처 설계</h1>
+            <p class="text-lg text-[#795548]">여행 일정 공유 서비스 'Michiki'</p>
+        </header>
+
+        <div class="flow-diagram space-y-8 lg:space-y-0 lg:space-x-8">
+
+            <!-- 1. View (화면) -->
+            <div class="w-full lg:w-1/3">
+                <div class="card rounded-xl shadow-lg h-full">
+                    <div class="card-header p-4 rounded-t-xl">
+                        <h2 class="text-2xl font-bold text-center">① View (화면)</h2>
+                        <p class="text-sm text-center font-medium">UI & 컴포넌트</p>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium">사용자 인터페이스를 구성하는 재사용 가능한 컴포넌트 집합입니다.</p>
+                        <ul class="space-y-4 list-disc list-inside text-left">
+                            <li><strong>주요 페이지 UI:</strong>
+                                <ul class="sub-list">
+                                    <li>메인, 대쉬보드, 스크랩 페이지</li>
+                                </ul>
+                            </li>
+                            <li><strong>여행 일정 상세 페이지 컴포넌트:</strong>
+                                <ul class="sub-list">
+                                    <li><code class="code">GoogleMap</code>: 지도 표시 영역</li>
+                                    <li><code class="code">Autocomplete</code>: 장소 검색 자동완성</li>
+                                    <li><code class="code">DatePicker</code>: 날짜 선택 달력</li>
+                                    <li><code class="code">DraggablePin</code>: 좌측 사이드바의 드래그 가능한 핀</li>
+                                    <li><code class="code">PinModal</code>: 핀 상세정보/메모용 모달</li>
+                                    <li><code class="code">CustomInfoWindow</code>: 지도 위 장소 정보창</li>
+                                    <li><code class="code">CategoryButtons</code>: 주변 장소 탐색 버튼</li>
+                                </ul>
+                            </li>
+                             <li><strong>UI 라이브러리/훅:</strong>
+                                <ul class="sub-list">
+                                     <li><code class="code">DndContext</code>: 드래그앤드롭 환경 제공</li>
+                                </ul>
+                             </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow hidden lg:flex items-center">→</div>
+            <div class="arrow lg:hidden">↓</div>
+
+            <!-- 2. Controller (로직/상호작용) -->
+            <div class="w-full lg:w-1/3">
+                <div class="card rounded-xl shadow-lg h-full">
+                    <div class="card-header p-4 rounded-t-xl">
+                        <h2 class="text-2xl font-bold text-center">② Controller (로직)</h2>
+                        <p class="text-sm text-center font-medium">이벤트 처리 & 함수</p>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium">사용자 이벤트에 반응하여 상태 변경을 요청하거나 API를 호출하는 함수들의 집합입니다.</p>
+                        <ul class="space-y-3 list-disc list-inside text-left">
+                            <li><strong>이벤트 핸들러 함수:</strong>
+                                <ul class="sub-list">
+                                    <li><code class="code">onLoadMap(map)</code>: 지도 초기화</li>
+                                    <li><code class="code">handleAddPin()</code>: 핀 추가</li>
+                                    <li><code class="code">handleDeletePin(id)</code>: 핀 삭제</li>
+                                    <li><code class="code">handlePinClick(pin)</code>: 핀 클릭 (모달 열기)</li>
+                                    <li><code class="code">handleDragEnd(event)</code>: 핀 순서 변경</li>
+                                    <li><code class="code">handleNearbySearch(type)</code>: 주변 장소 검색</li>
+                                </ul>
+                            </li>
+                            <li><strong>API 요청 및 라우팅:</strong>
+                                 <ul class="sub-list">
+                                    <li>Google Auth, Places, Geocoding API</li>
+                                    <li>백엔드 API (일정/핀/메모 CRUD)</li>
+                                    <li><code class="code">useNavigate</code>, <code class="code">useLocation</code> (페이지 이동)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow hidden lg:flex items-center">→</div>
+            <div class="arrow lg:hidden">↓</div>
+
+            <!-- 3. Model (데이터) -->
+            <div class="w-full lg:w-1/3">
+                <div class="card rounded-xl shadow-lg h-full">
+                    <div class="card-header p-4 rounded-t-xl">
+                        <h2 class="text-2xl font-bold text-center">③ Model (데이터)</h2>
+                        <p class="text-sm text-center font-medium">전역 상태 관리</p>
+                    </div>
+                    <div class="p-6">
+                        <p class="mb-4 font-medium">애플리케이션의 모든 데이터를 저장하고 상태 변화를 관리합니다.</p>
+                        <ul class="space-y-3 list-disc list-inside text-left">
+                            <li><strong>핵심 데이터 구조:</strong>
+                                <ul class="sub-list">
+                                    <li><code class="code">pinsByDay</code>: 날짜별 핀(장소) 2차원 배열</li>
+                                    <li><code class="code">User</code>: 사용자 정보 객체</li>
+                                </ul>
+                            </li>
+                            <li><strong>UI 상태 (State):</strong>
+                                <ul class="sub-list">
+                                    <li><code class="code">dateRange</code>: 선택된 여행 날짜 범위</li>
+                                    <li><code class="code">selectedDayIdx</code>: 현재 보고 있는 날짜 인덱스</li>
+                                    <li><code class="code">infoWindow</code>: 지도 정보창 데이터</li>
+                                    <li><code class="code">searchResult</code>: 검색 결과 (핀 후보)</li>
+                                    <li><code class="code">selectedPin</code>: 상세 보기 중인 핀 데이터</li>
+                                    <li><code class="code">modalOpen</code>: 핀 상세 모달 열림 여부</li>
+                                    <li><code class="code">activeCategory</code>: 선택된 주변탐색 카테고리</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 데이터 흐름도 -->
+        <div class="mt-12 text-center">
+            <h3 class="text-2xl font-bold text-[#5d4037] mb-6">🔄 데이터 흐름 요약 🔄</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-6 card rounded-xl shadow-md text-left">
+                    <h4 class="font-bold text-lg mb-2">[시나리오 1: 지도에 핀 추가하기]</h4>
+                    <p class="text-md leading-relaxed">
+                        <strong>1. View:</strong> 사용자가 지도 위에서 우클릭합니다.<br>
+                        <strong>2. Controller:</strong> <code class="code">onLoadMap</code>에서 등록한 리스너가 좌표를 감지하고, <code class="code">handleAddPin</code> 함수를 호출합니다.<br>
+                        <strong>3. Model:</strong> Controller는 Model의 <code class="code">pinsByDay[selectedDayIdx]</code> 배열에 새로운 핀 객체를 추가하도록 요청합니다.<br>
+                        <strong>4. View:</strong> <code class="code">pinsByDay</code> 배열의 변경을 감지하고, 지도와 사이드바에 새로운 핀을 렌더링합니다.
+                    </p>
+                </div>
+                <div class="p-6 card rounded-xl shadow-md text-left">
+                    <h4 class="font-bold text-lg mb-2">[시나리오 2: 핀 순서 바꾸기]</h4>
+                    <p class="text-md leading-relaxed">
+                        <strong>1. View:</strong> 사용자가 사이드바에서 <code class="code">DraggablePin</code>을 드래그합니다.<br>
+                        <strong>2. Controller:</strong> <code class="code">DndContext</code>가 드래그 종료를 감지하고 <code class="code">handleDragEnd</code> 함수를 호출합니다.<br>
+                        <strong>3. Model:</strong> Controller는 이벤트 정보를 바탕으로 <code class="code">pinsByDay</code> 배열의 요소 순서를 변경하도록 요청합니다.<br>
+                        <strong>4. View:</strong> 변경된 <code class="code">pinsByDay</code> 배열 순서에 맞춰 사이드바의 핀 목록이 다시 렌더링됩니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
