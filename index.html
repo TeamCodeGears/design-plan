@@ -100,7 +100,11 @@
           onclick="changeTab(event, 'interface')">
           인터페이스 설계
         </button>
-
+         <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'interfaceflow')">
+          인터페이스 흐름
+        </button>
            <button
           class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
           onclick="changeTab(event, 'frontend')">
@@ -116,11 +120,15 @@
           onclick="changeTab(event, 'api 명세서')">
           API 명세서
         </button>
-      
+          <button
+          class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
+          onclick="changeTab(event, 'classDR')">
+          클래스 다이어그램
+        </button>
         <button
           class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
           onclick="changeTab(event, 'erd')">
-          전체 ERD
+          ER 다이어그램
         </button>
         <button
           class="tab-btn flex-grow sm:flex-grow-0 px-4 py-2 text-sm sm:text-base font-semibold text-gray-600 rounded-md hover:bg-blue-100 hover:text-blue-700"
@@ -432,6 +440,26 @@
           </div>
         </div>
 
+          <!-- Interface flow Slide -->
+        <div
+          id="interfaceflow"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-4xl font-bold mb-6 border-b pb-4">
+            🗂️ 인터페이스 흐름 
+          </h2>
+          <div class="space-y-6">
+      
+                <img
+                  src="ui.png"
+                  alt="interfaceflow"
+                  class="w-[1100px] h-auto rounded-lg shadow-md border"
+                />
+              </div>
+          </div>
+        </div>
+
+
+
         <!-- ERD Slide -->
         <div
           id="erd"
@@ -460,6 +488,25 @@
                 <img
                   src="erd_diagram.png"
                   alt="erd"
+                  class="w-[1100px] h-auto rounded-lg shadow-md border"
+                />
+              </div>
+          </div>
+        </div>
+
+
+        <!-- Class Diagram  -->
+        <div
+          id="classDR"
+          class="tab-content p-4 sm:p-8 bg-white rounded-2xl shadow-lg">
+          <h2 class="text-4xl font-bold mb-6 border-b pb-4">
+            🗂️ 클래스 다이어그램
+          </h2>
+          <div class="space-y-6">
+      
+                <img
+                  src="class_DG.png"
+                  alt="classDG"
                   class="w-[1100px] h-auto rounded-lg shadow-md border"
                 />
               </div>
